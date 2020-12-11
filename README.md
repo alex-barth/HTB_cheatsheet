@@ -6,8 +6,20 @@
 
 Scan for open ports: `nmap <IP> -p- -T4` <br />
 Scan for services and their versions: `nmap <IP> -p<PORT>,<PORT2>,<...> -T4 -A` <br />
+
+### website technologies
+TODO
+builtwith.com, wappalyzer (browser addon), whatweb, burpsuite
+
+### email-gathering
+TODO
+Hunter.io, TheHarvester, breach-parse
   
 ## Enumeration
+
+## FTP (21)
+try to connect to ftp-server: `ftp <IP>`, Username: `anonymous`, Password: `<ENTER>` or `Anonymous` <br />
+try to find anything interesting, remember to check for hidden directories as well: `ls -la`
 
 ### SSH (22)
 try to connect to ssh: `ssh 192.168.57.134`. In case of `no matching key exchange method found. Their offer...` use something in lines of `ssh 192.168.57.134 -oKexAlgorithms diffie-hellman-group1-sha1` or `ssh 192.168.57.134 -oKexAlgorithms diffie-hellman-group1-sha1 -c aes128-cbc`<br />
@@ -84,17 +96,20 @@ Show available payloads with `msfvenom -l payloads` <br />
 
 ## Privilege Escalation
 
+The bible of privesc: `https://www.fuzzysecurity.com/tutorials/16.html`
+
 ### Windows
-see what user we are: `whoami`
-check the CMD history: TODO
-check the PowerShell history: `history` or `type C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt`
+see what user we are: `whoami` <br />
+check the CMD history: TODO <br />
+check the PowerShell history: `history` or `type C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt` <br />
+try to find known vulnerabilities, e.g. via `https://github.com/rasta-mouse/Sherlock` 
 
 ### Linux
-see what user we are: `whoami`
-check the bash history: `history` or `cat ~/.bash_history`
-check sudo privileges of user: `sudo -l`
-try to find vulerabilities in kernel, programs, etc.
-if we have no idea what to do: upload `LinEnum.sh` or `linuxprivchecker.py` on target machine (e.g. by via own webserver) and run them
+see what user we are: `whoami` <br />
+check the bash history: `history` or `cat ~/.bash_history` <br />
+check sudo privileges of user: `sudo -l` <br />
+try to find vulerabilities in kernel, programs, etc., get kernel version with `uname -a` <br />
+if we have no idea what to do: upload `LinEnum.sh` or `linuxprivchecker.py` on target machine (e.g. by via own webserver) and run them, or use `post/multi/recon/local_exploit_suggester` in msfconsole
 
 ## Cheatsheets
 
