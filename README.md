@@ -22,8 +22,10 @@ try to connect to ftp-server: `ftp <IP>`, Username: `anonymous`, Password: `<ENT
 try to find anything interesting, remember to check for hidden directories as well: `ls -la`
 
 ### SSH (22)
-try to connect to ssh: `ssh 192.168.57.134`. In case of `no matching key exchange method found. Their offer...` use something in lines of `ssh 192.168.57.134 -oKexAlgorithms diffie-hellman-group1-sha1` or `ssh 192.168.57.134 -oKexAlgorithms diffie-hellman-group1-sha1 -c aes128-cbc`<br />
+try to connect to ssh: `ssh <IP>`. In case of `no matching key exchange method found. Their offer...` use something in lines of `ssh 192.168.57.134 -oKexAlgorithms diffie-hellman-group1-sha1` or `ssh 192.168.57.134 -oKexAlgorithms diffie-hellman-group1-sha1 -c aes128-cbc`<br />
 see if a banner is returned (for version detection) and if a password is required <br />
+try to connect to ssh via a found private key for user: `ssh -i <PRIV_KEY_FILE> <USER>@IP`. Also try to connect to ssh via a found private key to other users that might have authorized this key.
+
 
 ### SMB (139/445)
 
@@ -108,7 +110,8 @@ try to find known vulnerabilities, e.g. via `https://github.com/rasta-mouse/Sher
 see what user we are: `whoami` <br />
 check the bash history: `history` or `cat ~/.bash_history` <br />
 check sudo privileges of user: `sudo -l` <br />
-try to find vulerabilities in kernel, programs, etc., get kernel version with `uname -a` <br />
+try to find vulerabilities in kernel, get kernel version with `uname -a` <br />
+try to find vulnerable programs running as root with `ps -aux` <br />
 if we have no idea what to do: upload `LinEnum.sh` or `linuxprivchecker.py` on target machine (e.g. by via own webserver) and run them, or use `post/multi/recon/local_exploit_suggester` in msfconsole
 
 ## Cheatsheets
