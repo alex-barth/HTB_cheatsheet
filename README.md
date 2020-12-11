@@ -85,10 +85,21 @@ Show available payloads with `msfvenom -l payloads` <br />
 ## Privilege Escalation
 
 ### Windows
+see what user we are: `whoami`
+check the CMD history: TODO
+check the PowerShell history: `history` or `type C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt`
 
-check the PowerShell history file: `type C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt`
+### Linux
+see what user we are: `whoami`
+check the bash history: `history` or `cat ~/.bash_history`
+check sudo privileges of user: `sudo -l`
+try to find vulerabilities in kernel, programs, etc.
+if we have no idea what to do: upload `LinEnum.sh` or `linuxprivchecker.py` on target machine (e.g. by via own webserver) and run them
 
+## Cheatsheets
 
-
+msfvenom: https://netsec.ws/?p=331
+tty shell: https://netsec.ws/?p=337
+Reverse-shell 1-liners: https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
 
 
