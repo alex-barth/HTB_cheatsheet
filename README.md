@@ -113,9 +113,9 @@ The bible of privesc: `https://www.fuzzysecurity.com/tutorials/16.html`
 
 ### Windows
 see what user we are: `whoami` <br />
-check the CMD history: TODO <br />
+check the CMD history (not saved between sessions): press `F7` or `doskey /history` <br />
 check the PowerShell history: `history` or `type C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt` <br />
-try to find known vulnerabilities, e.g. via `https://github.com/rasta-mouse/Sherlock` 
+try to find known vulnerabilities, e.g. via [Sherlock](https://github.com/rasta-mouse/Sherlock)
 
 ### Linux
 see what user we are: `whoami` <br />
